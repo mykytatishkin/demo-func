@@ -2,15 +2,25 @@ import React, { useEffect, useState } from 'react'
 
 export default function Country(props) {
 
+    const initialData = () => {
+        const items = JSON.parse( localStorage.getItem('items') );
+        console.log('init');
+        return items;
+    }
+
     const [country, setCountry] = useState({id: 0, name: '', capital:'', population:0});
-    const [list, setList] = useState([]);
+    const [list, setList] = useState(initialData);
 
     useEffect(
-        () => console.log(list),
+        () => {
+            console.log(list);
+        },
         [list]
     );
-    
+
     const addCountry = (event) => {
+        const countyId = list.length;
+        setCountry({...country, id:countyId})
         setList([...list, country]);
     }
 
@@ -38,10 +48,12 @@ export default function Country(props) {
             ?
                 <table className='table table-striped'>
                     <thead>
-                        <th>Id</th>
-                        <th>Name</th>
-                        <th>Capital</th>
-                        <th>Population</th>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Capital</th>
+                            <th>Population</th>
+                        </tr>
                     </thead>
                     <tbody>
                         {list.map( (c, index) => <tr key={index}>
